@@ -4,6 +4,7 @@ import { mutation, query } from './_generated/server';
 export const createGift = mutation({
   args: {
     name: v.string(),
+    orgId: v.string(),
   },
   async handler(ctx, args) {
     const user = await ctx.auth.getUserIdentity();
@@ -12,17 +13,21 @@ export const createGift = mutation({
     }
     await ctx.db.insert('gifts', {
       name: args.name,
+      orgId: args.orgId,
     });
   },
 });
 
 export const getGifts = query({
-  args: {},
+  args: { orgId: v.string() },
   async handler(ctx, args) {
     const user = await ctx.auth.getUserIdentity();
     if (!user) {
       return [];
     }
-    return ctx.db.query('gifts').collect();
+    return ctx.db
+      .query('gifts')
+      .withIndex('by_orgId', (q) => q.eq('orgId', args.orgId))
+      .collect();
   },
 });
