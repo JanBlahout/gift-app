@@ -2,6 +2,16 @@ import { ConvexError, v } from 'convex/values';
 import { MutationCtx, QueryCtx, mutation, query } from './_generated/server';
 import { getUser } from './users';
 
+// export const generateUploadUrl = mutation(async (ctx) => {
+//   const identity = await ctx.auth.getUserIdentity();
+
+//   if (!identity) {
+//     throw new ConvexError('you must be logged id to create a gift');
+//   }
+
+//   return await ctx.storage.generateUploadUrl();
+// });
+
 async function hasAccessToOrg(
   ctx: QueryCtx | MutationCtx,
   tokenIdentifier: string,
@@ -22,6 +32,10 @@ async function hasAccessToOrg(
 export const createGift = mutation({
   args: {
     name: v.string(),
+    description: v.optional(v.string()),
+    for: v.string(),
+    price: v.string(),
+    url: v.optional(v.string()),
     orgId: v.string(),
   },
   async handler(ctx, args) {
@@ -43,6 +57,10 @@ export const createGift = mutation({
 
     await ctx.db.insert('gifts', {
       name: args.name,
+      description: args.description,
+      for: args.for,
+      price: args.price,
+      url: args.url,
       orgId: args.orgId,
     });
   },
