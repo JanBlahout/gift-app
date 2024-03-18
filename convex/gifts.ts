@@ -91,3 +91,32 @@ export const getGifts = query({
       .collect();
   },
 });
+
+export const deleteGift = mutation({
+  args: { giftId: v.id('gifts') },
+  async handler(ctx, args) {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError('you must be logged id to create a gift');
+    }
+
+    const gift = await ctx.db.get(args.giftId);
+
+    if (!gift) {
+      throw new ConvexError('gift doesnt exist anymore');
+    }
+
+    const hasAccess = await hasAccessToOrg(
+      ctx,
+      identity.tokenIdentifier,
+      gift.orgId
+    );
+
+    if (!hasAccess) {
+      throw new ConvexError('you do not have access to this organisation');
+    }
+
+    await ctx.db.delete(args.giftId);
+  },
+});
