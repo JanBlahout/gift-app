@@ -26,6 +26,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/components/ui/use-toast';
+import { Loader, Loader2 } from 'lucide-react';
 
 const formSchema = z.object({
   title: z.string().min(2).max(200),
@@ -36,6 +38,7 @@ const formSchema = z.object({
 });
 
 export default function Home() {
+  const { toast } = useToast();
   const organization = useOrganization();
   const user = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,18 +70,32 @@ export default function Home() {
     // const { storageId } = await result.json();
     // Step 3: Save the newly allocated storage id to the database
     // await sendImage({ storageId, author: name });
+    try {
+      await createGift({
+        name: values.title,
+        description: values.description,
+        for: values.for,
+        price: values.price,
+        url: values.url,
+        orgId,
+      });
 
-    await createGift({
-      name: values.title,
-      description: values.description,
-      for: values.for,
-      price: values.price,
-      url: values.url,
-      orgId,
-    });
+      form.reset();
 
-    form.reset();
-    setIsModalOpen(false);
+      setIsModalOpen(false);
+
+      toast({
+        variant: 'success',
+        title: 'Gift created',
+        description: 'Gift is now available in the list',
+      });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Something went wrong',
+        description: "Gift coudln't be created, please try again later.",
+      });
+    }
   }
 
   let orgId: string | undefined = undefined;
@@ -93,7 +110,13 @@ export default function Home() {
     <main className="container pt-12">
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">Gifts</h1>
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <Dialog
+          open={isModalOpen}
+          onOpenChange={(isOpen) => {
+            setIsModalOpen(isOpen);
+            form.reset();
+          }}
+        >
           <DialogTrigger asChild>
             <Button onClick={() => {}}>Add a gift</Button>
           </DialogTrigger>
@@ -171,7 +194,16 @@ export default function Home() {
                     )}
                   />
 
-                  <Button type="submit">Submit</Button>
+                  <Button
+                    type="submit"
+                    disabled={form.formState.isSubmitting}
+                    className="flex gap-2"
+                  >
+                    {form.formState.isSubmitting && (
+                      <Loader2 className="animate-spin h-4 w-4" />
+                    )}
+                    Submit
+                  </Button>
                 </form>
               </Form>
             </DialogHeader>
