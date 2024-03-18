@@ -28,6 +28,7 @@ import { useState } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader, Loader2 } from 'lucide-react';
+import { UploadButton } from './upload-button';
 
 const formSchema = z.object({
   title: z.string().min(2).max(200),
@@ -110,6 +111,7 @@ export default function Home() {
     <main className="container pt-12">
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">Gifts</h1>
+        <UploadButton />
         <Dialog
           open={isModalOpen}
           onOpenChange={(isOpen) => {
