@@ -5,6 +5,7 @@ import { api } from '../../convex/_generated/api';
 import { UploadButton } from './upload-button';
 import GiftCard from './gift-card';
 import Image from 'next/image';
+import { Loader2 } from 'lucide-react';
 
 export default function Home() {
   const organization = useOrganization();
@@ -17,10 +18,18 @@ export default function Home() {
   }
 
   const gifts = useQuery(api.gifts.getGifts, orgId ? { orgId } : 'skip');
+  const isLoading = gifts === undefined;
 
   return (
     <main className="container pt-12">
-      {gifts && gifts?.length === 0 && (
+      {isLoading && (
+        <div className="flex flex-col gap-4 w-full items-center mt-24 text-gray-800 ">
+          <Loader2 className="animate-spin w-16 h-16 " />
+          <div className="text-2xl">Loading...</div>
+        </div>
+      )}
+
+      {!isLoading && gifts?.length === 0 && (
         <div className="flex flex-col gap-4 w-full items-center mt-24">
           <Image
             alt="picture of a gift and a woman"
@@ -33,7 +42,7 @@ export default function Home() {
         </div>
       )}
 
-      {gifts && gifts.length > 0 && (
+      {!isLoading && gifts.length > 0 && (
         <div className="flex justify-between items-center mb-10">
           <h1 className="text-4xl font-bold ">Gifts</h1>
           <UploadButton />
