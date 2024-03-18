@@ -6,11 +6,14 @@ import { UploadButton } from './upload-button';
 import GiftCard from './gift-card';
 import Image from 'next/image';
 import { Loader2 } from 'lucide-react';
+import { SearchBar } from './search-bar';
+import { useState } from 'react';
+import { Id } from '../../convex/_generated/dataModel';
 
 export default function Home() {
   const organization = useOrganization();
   const user = useUser();
-  // const generateUploadUrl = useMutation(api.gifts.generateUploadUrl);
+  const [filter, setFilter] = useState('');
 
   let orgId: string | undefined = undefined;
   if (organization.isLoaded && user.isLoaded) {
@@ -19,9 +22,22 @@ export default function Home() {
 
   const gifts = useQuery(api.gifts.getGifts, orgId ? { orgId } : 'skip');
   const isLoading = gifts === undefined;
+  const filteredGifts = gifts?.filter((gift) => {
+    return (
+      gift.name.toLowerCase().includes(filter) ||
+      gift.description?.toLowerCase().includes(filter) ||
+      gift.for.toLowerCase().includes(filter)
+    );
+  });
 
   return (
     <main className="container pt-12">
+      <div className="flex justify-between items-center mb-10">
+        <h1 className="text-4xl font-bold ">Gifts</h1>
+        <SearchBar filter={filter} setFilter={setFilter} />
+        <UploadButton />
+      </div>
+
       {isLoading && (
         <div className="flex flex-col gap-4 w-full items-center mt-24 text-gray-800 ">
           <Loader2 className="animate-spin w-16 h-16 " />
@@ -29,7 +45,7 @@ export default function Home() {
         </div>
       )}
 
-      {!isLoading && gifts?.length === 0 && (
+      {!isLoading && !filter && gifts?.length === 0 && (
         <div className="flex flex-col gap-4 w-full items-center mt-24">
           <Image
             alt="picture of a gift and a woman"
@@ -42,14 +58,20 @@ export default function Home() {
         </div>
       )}
 
-      {!isLoading && gifts.length > 0 && (
-        <div className="flex justify-between items-center mb-10">
-          <h1 className="text-4xl font-bold ">Gifts</h1>
-          <UploadButton />
+      {!isLoading && filter && filteredGifts?.length === 0 && (
+        <div className="flex flex-col gap-4 w-full items-center mt-24">
+          <Image
+            alt="picture of a gift and a woman"
+            width="400"
+            height="400"
+            src="/no_results.svg"
+          />
+          <h3 className="text-2xl">No gifts found with the filter.</h3>
         </div>
       )}
+
       <div className="grid grid-cols-4 gap-4">
-        {gifts?.map((gift) => {
+        {filteredGifts?.map((gift: any) => {
           return <GiftCard key={gift._id} gift={gift} />;
         })}
       </div>

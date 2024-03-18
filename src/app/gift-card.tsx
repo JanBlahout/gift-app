@@ -77,8 +77,6 @@ function GiftCardActions({ gift }: { gift: Doc<'gifts'> }) {
           <MoreVertical />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {/* <DropdownMenuLabel>Delete</DropdownMenuLabel>
-        <DropdownMenuSeparator /> */}
           <DropdownMenuItem
             onClick={() => setIsConfirmOpen(true)}
             className="flex gap-1 items-center text-red-700 cursor-pointer"
@@ -99,18 +97,23 @@ function GiftCard(props: GiftCardProps) {
   return (
     <Card>
       <CardHeader className="relative">
-        <CardTitle>{gift.name}</CardTitle>
+        <CardTitle>{gift.for}</CardTitle>
         <div className="absolute top-2 right-2">
           <GiftCardActions gift={gift} />
         </div>
-        {/* <CardDescription>{gift.description}</CardDescription> */}
+        <CardDescription>{gift.price}</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <p className="font-bold">{gift.name}</p>
+        <p>{gift.description}</p>
       </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
-        <Button>Open link</Button>
+      <CardFooter className="flex justify-between">
+        {gift.url && (
+          <a href={gift.url} target="_blank">
+            <Button variant={'outline'}>Link</Button>
+          </a>
+        )}
+        <Button>Marked as bought</Button>
       </CardFooter>
     </Card>
   );
