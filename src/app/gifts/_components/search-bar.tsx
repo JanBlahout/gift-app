@@ -29,15 +29,11 @@ export function SearchBar({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setFilter(values.query.toLowerCase());
-  }
-
   return (
     <div>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(() => {})}
           className="flex gap-2 items-center"
         >
           <FormField

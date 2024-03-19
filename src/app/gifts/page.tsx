@@ -28,9 +28,9 @@ export default function Home() {
   const isLoading = gifts === undefined;
   const filteredGifts = gifts?.filter((gift) => {
     return (
-      gift.name.toLowerCase().includes(filter) ||
-      gift.description?.toLowerCase().includes(filter) ||
-      gift.for.toLowerCase().includes(filter)
+      gift.name.toLowerCase().includes(filter.toLocaleLowerCase()) ||
+      gift.description?.toLowerCase().includes(filter.toLocaleLowerCase()) ||
+      gift.for.toLowerCase().includes(filter.toLocaleLowerCase())
     );
   });
 
