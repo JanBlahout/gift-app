@@ -33,6 +33,7 @@ import { useState } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useToast } from '@/components/ui/use-toast';
+import { Protect } from '@clerk/nextjs';
 
 type GiftCardProps = {
   gift: Doc<'gifts'>;
@@ -77,12 +78,14 @@ function GiftCardActions({ gift }: { gift: Doc<'gifts'> }) {
           <MoreVertical />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem
-            onClick={() => setIsConfirmOpen(true)}
-            className="flex gap-1 items-center text-red-700 cursor-pointer"
-          >
-            <TrashIcon className="w-4 h-4" /> Delete
-          </DropdownMenuItem>
+          <Protect role="org:admin">
+            <DropdownMenuItem
+              onClick={() => setIsConfirmOpen(true)}
+              className="flex gap-1 items-center text-red-700 cursor-pointer"
+            >
+              <TrashIcon className="w-4 h-4" /> Delete
+            </DropdownMenuItem>
+          </Protect>
           <DropdownMenuItem className="flex gap-1 items-center">
             <GiftIcon className="w-4 h-4" /> Mark as bought
           </DropdownMenuItem>

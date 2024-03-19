@@ -5,10 +5,13 @@ import { api } from '../../convex/_generated/api';
 import { UploadButton } from './upload-button';
 import GiftCard from './gift-card';
 import Image from 'next/image';
-import { Loader2 } from 'lucide-react';
+import { Grid3X3Icon, Loader2, Rows3Icon, Table2Icon } from 'lucide-react';
 import { SearchBar } from './search-bar';
 import { useState } from 'react';
 import { Id } from '../../convex/_generated/dataModel';
+import { DataTable } from './gift-table';
+import { columns } from './columns';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function Home() {
   const organization = useOrganization();
@@ -37,6 +40,29 @@ export default function Home() {
         <SearchBar filter={filter} setFilter={setFilter} />
         <UploadButton />
       </div>
+
+      <Tabs defaultValue="grid">
+        <TabsList className="mb-8">
+          <TabsTrigger value="grid" className="flex gap-2 items-center">
+            <Grid3X3Icon />
+            Grid
+          </TabsTrigger>
+          <TabsTrigger value="table" className="flex gap-2 items-center">
+            <Rows3Icon />
+            Table
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="grid">
+          <div className="grid grid-cols-4 gap-4">
+            {filteredGifts?.map((gift) => {
+              return <GiftCard key={gift._id} gift={gift} />;
+            })}
+          </div>
+        </TabsContent>
+        <TabsContent value="table">
+          {!isLoading && gifts && <DataTable columns={columns} data={gifts} />}
+        </TabsContent>
+      </Tabs>
 
       {isLoading && (
         <div className="flex flex-col gap-4 w-full items-center mt-24 text-gray-800 ">
@@ -69,12 +95,6 @@ export default function Home() {
           <h3 className="text-2xl">No gifts found with the filter.</h3>
         </div>
       )}
-
-      <div className="grid grid-cols-4 gap-4">
-        {filteredGifts?.map((gift: any) => {
-          return <GiftCard key={gift._id} gift={gift} />;
-        })}
-      </div>
     </main>
   );
 }
