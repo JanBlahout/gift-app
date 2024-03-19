@@ -54,7 +54,7 @@ export default function Home() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="grid">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredGifts?.map((gift) => {
               return <GiftCard key={gift._id} gift={gift} />;
             })}

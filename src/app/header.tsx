@@ -13,7 +13,7 @@ import Link from 'next/link';
 export function Header() {
   return (
     <div className="border-b py-4 bg-gray-50 relative z-10">
-      <div className="container flex justify-between items-center">
+      <div className="container flex justify-center sm:justify-between items-center flex-wrap">
         <Link href="/">
           <Image src="/logo.png" width="50" height="50" alt="gift" />
         </Link>
