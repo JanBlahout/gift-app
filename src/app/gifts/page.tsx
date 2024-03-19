@@ -61,7 +61,9 @@ export default function Home() {
           </div>
         </TabsContent>
         <TabsContent value="table">
-          {!isLoading && gifts && <DataTable columns={columns} data={gifts} />}
+          {!isLoading && filteredGifts && (
+            <DataTable columns={columns} data={filteredGifts} />
+          )}
         </TabsContent>
       </Tabs>
 
