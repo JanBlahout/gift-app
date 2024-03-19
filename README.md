@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Perfect Present
 
-## Getting Started
+Perfect Present is an application developed using Next.js, Tailwind CSS, Shadcn, Convex, Clerk, and TypeScript. It serves as a platform for creating gift lists, organizing them within families or organizations, adding members, and sharing gift ideas across them.
 
-First, run the development server:
+### Try it out [HERE- Pefrect Present](https://perfectpresent.vercel.app/)
+
+## Features
+
+- **Gift Lists**: Create and manage gift lists for various occasions.
+- **Organization Management**: Organize gift lists within families or organizations.
+- **Member Management**: Add and manage members within organizations, facilitating collaboration on gift lists.
+- **Sharing**: Share gift lists and ideas across organization members.
+
+## Technologies Used
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Shadcn](https://github.com/shadcn)
+- [Convex](https://www.convex.dev/)
+- [Clerk](https://clerk.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+
+## Installation
+
+Clone the repository:
 
 ```bash
+git clone <repository_url>
+cd gift-app
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx convex dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create Clerk and Convex accounts, fill in the .env.local
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+CONVEX_DEPLOYMENT=dev:your-convex-domain
+NEXT_PUBLIC_CONVEX_URL=https://your-convex-domain.convex.cloud
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_YOURKEY
+CLERK_SECRET_KEY=sk_test_SECRET_KEY
+CLERK_DOMAIN=https://yourodmain.clerk.accounts.dev
+```

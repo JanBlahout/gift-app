@@ -9,7 +9,7 @@ import { Footer } from './footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'GIFTY',
+  title: 'Perfect Present',
   description: 'No more unwanted gifts!',
 };
 

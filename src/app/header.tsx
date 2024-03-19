@@ -6,6 +6,7 @@ import {
   SignedOut,
   UserButton,
 } from '@clerk/nextjs';
+import { Github } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -17,6 +18,12 @@ export function Header() {
           <Image src="/logo.png" width="50" height="50" alt="gift" />
         </Link>
         <div className="flex gap-4 items-center">
+          <a href="https://github.com/JanBlahout">
+            <Button variant="outline">
+              <Github className="w-6 h-6" />
+            </Button>
+          </a>
+
           <SignedIn>
             <Link href={'/gifts'}>
               <Button variant={'outline'}>Gifts</Button>
